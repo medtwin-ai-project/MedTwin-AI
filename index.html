@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MedTwin AI — прототип</title>
+<style>
+:root{font-family:Inter,Segoe UI,Arial,sans-serif;color:#252342;background:#f7f7fc}
+*{box-sizing:border-box}
+body{margin:0}
+.shell{max-width:1250px;margin:auto;padding:26px}
+header{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:25px}
+.brand{display:flex;align-items:center;gap:12px;font-size:24px;font-weight:850}
+.logo{background:linear-gradient(135deg,#7855ef,#c19bff);color:white;border-radius:15px;padding:13px}
+.muted{color:#77758f}
+.pill{font-size:12px;border:1px solid #dcd7fa;background:#f1edff;border-radius:100px;padding:8px 13px;color:#6345bd}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+button{cursor:pointer;font:inherit;border:0}
+nav button{border-radius:12px;background:white;color:#625e7d;padding:12px 18px;border:1px solid #e7e4f2}
+nav button.active,.primary{background:#7354dc!important;color:white!important}
+.hero{background:linear-gradient(115deg,#6e50d6,#a780ee);color:white;border-radius:22px;padding:28px;margin-bottom:22px}
+.hero h1{margin:0 0 10px;font-size:clamp(23px,3vw,35px)}
+.hero p{margin:0;opacity:.9}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.card{background:white;border:1px solid #eeecf5;border-radius:18px;padding:20px;box-shadow:0 5px 20px #27204c07}
+.kpi .label{font-size:13px;color:#79768e}
+.kpi strong{display:block;font-size:clamp(21px,2.5vw,31px);margin:12px 0}
+.kpi small{color:#5f9d7a}
+.two{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;margin-top:17px}
+h2{font-size:19px;margin:0 0 17px}
+.barline{margin:16px 0}
+.barhead{display:flex;justify-content:space-between;font-size:14px;margin-bottom:7px}
+.track{height:12px;background:#efedf7;border-radius:30px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,#7857e5,#b39af5);border-radius:30px}
+.note{font-size:13px;color:#7c7890;line-height:1.6}
+.insight{padding:13px 14px;background:#f7f4ff;border-left:3px solid #8864e7;border-radius:9px;margin-bottom:10px;font-size:14px;line-height:1.5}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.field{display:block;font-size:13px;color:#65617f;margin-bottom:16px}
+.field input{width:100%;accent-color:#7958e4;margin-top:12px}
+.field b{float:right;color:#3d326e}
+.scenario{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px}
+.scenario button{padding:11px 13px;border-radius:10px;background:#f1eef9;color:#574a80}
+.scenario button.selected{background:#7554df;color:white}
+.result{font-size:27px;font-weight:800;margin:7px 0}
+.comparison{width:100%;border-collapse:collapse;font-size:14px}
+td,th{text-align:left;padding:13px 10px;border-bottom:1px solid #eeeaf5}
+th{color:#77718d;font-weight:600}
+.positive{color:#16895d}
+.negative{color:#d04f61}
+.hidden{display:none!important}
+.footer{margin-top:22px;color:#8a859e;font-size:12px;text-align:center}
+@media(max-width:850px){
+.grid{grid-template-columns:repeat(2,1fr)}
+.two{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+.shell{padding:14px}
+.grid{grid-template-columns:1fr 1fr;gap:9px}
+.card{padding:14px}
+.controls{grid-template-columns:1fr}
+.kpi strong{font-size:22px}
+}
+</style>
+</head>
+<body>
+<main class="shell">
+<header>
+<div class="brand">
+<span class="logo">✦</span>
+<div>
+MedTwin <span style="color:#7959e2">AI</span>
+<div class="muted" style="font-size:12px;font-weight:400">
+Цифровой двойник клиники
+</div>
+</div>
+</div>
+<span class="pill">● Демо · данные условные</span>
+</header>
+
+<nav>
+<button class="active" data-tab="dashboard">Обзор клиники</button>
+<button data-tab="simulator">Что, если?</button>
+<button data-tab="about">О проекте</button>
+</nav>
+
+<section id="dashboard">
+<div class="hero">
+<h1>Управляйте клиникой на основе данных</h1>
+<p>Загрузка врачей, финансы и подсказки для управленческих решений — в одном месте.</p>
+</div>
+
+<div class="grid">
+<div class="card kpi">
+<div class="label">Выручка / месяц</div>
+<strong>4,80 млн ₽</strong>
+<small>Демо-показатель</small>
+</div>
+<div class="card kpi">
+<div class="label">Расходы / месяц</div>
+<strong>3,75 млн ₽</strong>
+<small>Демо-показатель</small>
+</div>
+<div class="card kpi">
+<div class="label">Прибыль / месяц</div>
+<strong>1,05 млн ₽</strong>
+<small>Маржа 21,9%</small>
+</div>
+<div class="card kpi">
+<div class="label">Загрузка врачей</div>
+<strong>72%</strong>
+<small>Среднее значение</small>
+</div>
+</div>
+
+<div class="two">
+<div class="card">
+<h2>Загрузка по направлениям</h2>
+<div id="bars"></div>
+<p class="note">Показатели вымышлены для демонстрации интерфейса.</p>
+</div>
+<div class="card">
+<h2>Управленческие сигналы</h2>
+<div class="insight">
+📈 Терапия загружена сильнее остальных направлений. Проверьте доступность записи в часы пикового спроса.
+</div>
+<div class="insight">
+🕒 В диагностике есть свободные слоты. Рассмотрите перераспределение расписания.
+</div>
+<div class="insight">
+🧪 Сравните решения в разделе «Что, если?» до изменения штатного расписания.
+</div>
+<button class="primary"
+style="padding:12px 18px;border-radius:10px"
+onclick="showTab('simulator')">
+Открыть симулятор →
+</button>
+</div>
+</div>
+</section>
+
+<section id="simulator" class="hidden">
+<div class="hero">
+<h1>Симулятор «Что, если?»</h1>
+<p>Измените параметры и посмотрите ориентировочное влияние на прибыль. Модель учебная, не прогноз ИИ.</p>
+</div>
+
+<div class="two">
+<div class="card">
+<h2>Выберите управленческое решение</h2>
+<div class="scenario" id="scenarios">
+<button class="selected" data-s="none">Без изменений</button>
+<button data-s="shift">Изменить расписание</button>
+<button data-s="hire">Нанять врача</button>
+</div>
+
+<div class="controls">
+<label class="field">
+Дополнительные приёмы / месяц
+<b id="visitsLabel">0</b>
+<input type="range" id="visits"
+min="0" max="250" step="5" value="0">
+</label>
+
+<label class="field">
+Средняя выручка за приём
+<b id="priceLabel">3 000 ₽</b>
+<input type="range" id="price"
+min="1500" max="6000" step="100" value="3000">
+</label>
+
+<label class="field">
+Переменные расходы на приём
+<b id="costLabel">900 ₽</b>
+<input type="range" id="cost"
+min="300" max="2500" step="50" value="900">
+</label>
+
+<label class="field">
+Доп. постоянные расходы / месяц
+<b id="fixedLabel">0 ₽</b>
+<input type="range" id="fixed"
+min="0" max="200000" step="5000" value="0">
+</label>
+</div>
+
+<p class="note">
+Допущение: каждый дополнительный приём состоялся и оплачен.
+Ограничения спроса, пропускной способности и качества
+медицинской помощи модель пока не учитывает.
+</p>
+</div>
+
+<div class="card">
+<h2>Расчёт последствий</h2>
+<div class="muted">Изменение месячной прибыли</div>
+<div id="delta" class="result">0 ₽</div>
+
+<div class="muted" style="margin-top:19px">
+Прогнозная прибыль клиники
+</div>
+<div id="profit" class="result">1 050 000 ₽</div>
+
+<div class="muted" style="margin-top:19px">
+Дополнительная выручка
+</div>
+<div id="revenue" class="result" style="font-size:22px">0 ₽</div>
+
+<div class="muted" style="margin-top:19px">
+Дополнительные расходы
+</div>
+<div id="expenses" class="result" style="font-size:22px">0 ₽</div>
+
+<p class="note">
+Расчёт: Δ прибыль = приёмы ×
+(цена − переменные расходы) −
+дополнительные постоянные расходы.
+</p>
+</div>
+</div>
+
+<div class="card" style="margin-top:17px;overflow-x:auto">
+<h2>Сравнение вариантов при текущих настройках</h2>
+<table class="comparison">
+<thead>
+<tr>
+<th>Вариант</th>
+<th>Доп. приёмы</th>
+<th>Доп. постоянные расходы</th>
+<th>Изменение прибыли</th>
+</tr>
+</thead>
+<tbody id="compare"></tbody>
+</table>
+<p class="note">
+В таблице для вариантов используются учебные предположения:
+0/0, 45/12 000 ₽, 90/135 000 ₽ соответственно.
+Цена и переменные расходы берутся из ползунков.
+</p>
+</div>
+</section>
+
+<section id="about" class="hidden">
+<div class="hero">
+<h1>MedTwin AI</h1>
+<p>Виртуальный помощник руководителя частной клиники.</p>
+</div>
+<div class="two">
+<div class="card">
+<h2>Идея</h2>
+<p>
+Продукт должен помогать руководителю видеть загрузку
+ресурсов, оценивать финансовые показатели и сравнивать
+управленческие сценарии.
+</p>
+<p>
+Предполагается интеграция с существующей МИС,
+а не её замена.
+</p>
+</div>
+<div class="card">
+<h2>Статус</h2>
+<p>
+Это демонстрационный прототип для проекта ВШЭ.
+Здесь нет реального подключения к «Инфоклинике»,
+обученной модели ИИ или подтверждённых прогнозов.
+</p>
+<p>
+Следующий этап — интервью с управляющим и тестирование
+на разрешённых обезличенных данных.
+</p>
+</div>
+</div>
+</section>
+
+<div class="footer">
+MedTwin AI · учебный интерактивный прототип · 2026
+</div>
+</main>
+
+<script>
+const fmt = n =>
+  Math.round(n).toLocaleString('ru-RU') + ' ₽';
+
+const bars = [
+  ['Терапия', 88],
+  ['Педиатрия', 77],
+  ['Диагностика', 54],
+  ['Кардиология', 69]
+];
+
+document.getElementById('bars').innerHTML =
+  bars.map(([name, v]) => `
+    <div class="barline">
+      <div class="barhead">
+        <span>${name}</span><b>${v}%</b>
+      </div>
+      <div class="track">
+        <div class="fill" style="width:${v}%"></div>
+      </div>
+    </div>
+  `).join('');
+
+function showTab(id) {
+  document.querySelectorAll('main>section').forEach(e =>
+    e.classList.toggle('hidden', e.id !== id)
+  );
+  document.querySelectorAll('nav button').forEach(b =>
+    b.classList.toggle('active', b.dataset.tab === id)
+  );
+}
+
+document.querySelectorAll('nav button').forEach(b =>
+  b.onclick = () => showTab(b.dataset.tab)
+);
+
+const presets = {
+  none: [0, 0],
+  shift: [45, 12000],
+  hire: [90, 135000]
+};
+
+const inputs = ['visits', 'price', 'cost', 'fixed'];
+
+function update() {
+  const v = +document.getElementById('visits').value;
+  const p = +document.getElementById('price').value;
+  const c = +document.getElementById('cost').value;
+  const f = +document.getElementById('fixed').value;
+
+  document.getElementById('visitsLabel').textContent = v;
+
+  for (const [id, val] of [
+    ['price', p], ['cost', c], ['fixed', f]
+  ]) {
+    document.getElementById(id + 'Label').textContent = fmt(val);
+  }
+
+  const rev = v * p;
+  const exp = v * c + f;
+  const delta = rev - exp;
+
+  for (const [id, val] of [
+    ['delta', delta],
+    ['profit', 1050000 + delta],
+    ['revenue', rev],
+    ['expenses', exp]
+  ]) {
+    document.getElementById(id).textContent =
+      (id === 'delta' && val > 0 ? '+' : '') + fmt(val);
+  }
+
+  document.getElementById('delta').className =
+    'result ' + (
+      delta > 0 ? 'positive' :
+      delta < 0 ? 'negative' : ''
+    );
+
+  const names = {
+    none: 'Без изменений',
+    shift: 'Изменить расписание',
+    hire: 'Нанять врача'
+  };
+
+  document.getElementById('compare').innerHTML =
+    Object.entries(presets).map(([k, [n, fixed]]) => `
+      <tr>
+        <td>${names[k]}</td>
+        <td>${n}</td>
+        <td>${fmt(fixed)}</td>
+        <td class="${
+          n * (p - c) - fixed >= 0 ? 'positive' : 'negative'
+        }">
+          ${fmt(n * (p - c) - fixed)}
+        </td>
+      </tr>
+    `).join('');
+}
+
+inputs.forEach(id =>
+  document.getElementById(id).addEventListener('input', update)
+);
+
+document.querySelectorAll('#scenarios button').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('#scenarios button').forEach(x =>
+      x.classList.toggle('selected', x === b)
+    );
+    const [v, f] = presets[b.dataset.s];
+    document.getElementById('visits').value = v;
+    document.getElementById('fixed').value = f;
+    update();
+  };
+});
+
+update();
+</script>
+</body>
+</html>
